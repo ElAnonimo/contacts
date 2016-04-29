@@ -1,0 +1,102 @@
+<div class="container" id="main-container">
+  <div class="row">
+    <div class="col-md-3">
+      <div id="tree"></div>
+    </div>
+    <div class="col-md-9">
+      <form class="form-horizontal" role="form">
+        <div class="form-inline">
+             <label>Поиск</label>
+             <input type="text" size="50" class="form-control" ng-model="filter.search" />
+        </div>
+
+        <div class="form-inline" style="margin-top:10px;">
+              <label> Возраст</label>
+              Мин. <input type="text" size="2" class="form-control" ng-model="filter.ageMin" /> Макс. <input type="text" size="4" class="form-control" ng-model="filter.ageMax" />
+        </div>
+        <div class="checkbox">
+          <label>
+                <input type="checkbox" ng-model="filter.photo"> Только с фото
+              </label>
+        </div>
+        <div class="form-inline">
+          <button ng-click="contact={}" type="button" data-toggle="modal" data-target="#contactModal" class="btn btn-default navbar-btn">Добавить контакт</button>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered table-condensed projects-list">
+        <thead>
+          <tr><th>ФИО</th><th>Дата</th><th>Фото</th><th>Группа</th><th>Почта</th><th>Описание</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr dir-paginate="u in usersList | mainFilter:filter | itemsPerPage: 10 " ng-click="openQwestionInfo(q.id)">
+            <td>{{u.name}}</td>
+            <td>{{u.date}}</td>
+            <td style="text-align:center;">
+              <img ng-if="u.photo" width="80" height="80" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+" class="img-rounded">
+            </td>
+            <td>{{getGroupName(u.group)}}</td>
+            <td>{{u.mail}}</td>
+            <td>{{u.description}}</td>
+            <td>
+              <button ng-click="editContact(u);" type="button" class="btn btn-default glyphicon glyphicon-pencil"></button>
+              <button ng-click="usersList.$remove(u);" type="button" class="btn btn-default glyphicon glyphicon-remove"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <dir-pagination-controls></dir-pagination-controls>
+    </div>
+  </div>
+</div>
+<!--MODALS-->
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">{{qwestionTitle}}</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="form-group">
+            <label for="inputDate">Дата рождения</label>
+            <input type="text" id="datepicker" class="form-control" ng-model="contact.date">
+            <!--<p class="input-group">
+              <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="contact.date" is-open="popupDP.opened" datepicker-options="dateOptions" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openDP()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>-->
+          </div>
+          <div class="form-group">
+            <label for="inputWho">ФИО</label>
+            <input type="text" class="form-control" id="inputWho" ng-model="contact.name">
+          </div>
+          <div class="form-group">
+            <label for="inputCost">Почта</label>
+            <input type="text" class="form-control" id="inputCost" ng-model="contact.mail">
+          </div>
+          <div class="form-group">
+            <label for="inputCost">Группа</label>
+            <select class="form-control" ng-options="g.href as g.text for g in groupsList" ng-model="contact.group">
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="contact.photo"> Есть фото
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputCost">Описание</label>
+            <textarea class="form-control" rows="3" ng-model="contact.description"></textarea>
+          </div>
+        </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <a ng-click="contactSave()" class="btn btn-primary">Сохранить</a>
+      </div>
+    </div>
+  </div>
+</div>

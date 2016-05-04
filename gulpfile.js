@@ -21,13 +21,13 @@ var path = {
     clean: './build'
 };
 var config = {
-    server: {
-      baseDir: "./"
-    },
-    tunnel: true,
-    host: 'localhost',
-    port: 8000,
-    logPrefix: "-"
+			server: {
+				baseDir: "./"
+			},
+			tunnel: true,
+			host: 'localhost',
+			port: 8000,
+			logPrefix: "-"
 };
 gulp.task('js:build', function () {
     gulp.src(path.src.js) // Найдем main файл
